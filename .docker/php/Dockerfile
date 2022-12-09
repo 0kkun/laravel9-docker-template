@@ -1,9 +1,17 @@
-FROM php:8.1-fpm
+FROM php:8.1.8-fpm
+
 COPY php.ini /usr/local/etc/php/
 
-RUN apt-get update \
-  && apt-get install -y zlib1g-dev mariadb-client vim zip unzip \
-  && docker-php-ext-install pdo_mysql
+# for vite server
+EXPOSE 5173
+
+RUN set -x \
+  && apt-get update \
+  && apt-get install -y git libicu-dev libpng-dev libzip-dev libonig-dev wget zip unzip vim \
+  && git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis \
+  && docker-php-ext-install bcmath exif gd intl pdo_mysql sockets zip opcache redis
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 # Composer install
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -22,6 +30,6 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 WORKDIR /var/www
 
-ADD . /backend/storage
+ADD . /server/storage
 
-RUN chown -R www-data:www-data /backend/storage
+RUN chown -R www-data:www-data /server/storage

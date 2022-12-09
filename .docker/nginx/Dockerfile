@@ -1,3 +1,3 @@
-FROM nginx:1.21
+FROM nginx:1.20.1
 
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+RUN apt update && apt install -y procps
