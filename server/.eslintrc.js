@@ -35,7 +35,7 @@ module.exports = {
         "trailingComma": "all",
         "printWidth": 120,
         "tabWidth": 2,
-        "useTabs": true,
+        "useTabs": false,
         "trailingComma": 'all',
         "bracketSpacing": true
       }
