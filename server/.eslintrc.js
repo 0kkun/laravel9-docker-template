@@ -5,13 +5,13 @@ module.exports = {
   },
   "extends": [
     "eslint:recommended",
-    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ],
   "overrides": [
   ],
-  "parser": "@typescript-eslint/parser",
+  "parser": "vue-eslint-parser",
   "parserOptions": {
     "ecmaVersion": 13,
     "parser": "@typescript-eslint/parser",
@@ -37,7 +37,7 @@ module.exports = {
         "tabWidth": 2,
         "useTabs": true,
         "trailingComma": 'all',
-        "bracketSpacing": false
+        "bracketSpacing": true
       }
     ],
   }

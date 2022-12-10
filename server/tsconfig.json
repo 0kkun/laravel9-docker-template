@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "commonjs",
+        "baseUrl": "./",
+        // "typeRoots": [
+        //     "./resources/js/@types"
+        // ],
+        // "types": [
+        // "node"
+        // ],       
+        // "allowJs": true,
+        // "allowSyntheticDefaultImports": true,
+        // "esModuleInterop": true,
+        // "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        // "noImplicitAny": false,
+        // "skipLibCheck": true
+    },
+    "paths": {
+        "@/*": ["resources/js/*"]
+    },
+    // "include": [
+    //     "./resources/js/**/*"
+    // ]
+}
