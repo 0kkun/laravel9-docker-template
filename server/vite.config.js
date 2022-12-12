@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+// NOTE: https://ja.vitejs.dev/config/server-options.html
 export default defineConfig({
   plugins: [
     vue(),
@@ -17,9 +18,12 @@ export default defineConfig({
     hmr: {
       host: 'localhost',
     },
-    // css差分監視ビルドを行いたい場合
-    // watch: {
-    //     usePolling: true,
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://localhost',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '')
+    //   },
     // },
   },
   resolve: {

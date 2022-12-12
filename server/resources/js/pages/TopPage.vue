@@ -12,12 +12,21 @@
       Add Count
     </button>
     <img :src="'/images/no-image.png'" />
+    {{ samples }}
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { fetchSample } from '../api/SampleRepository'
+
 const count = ref(0)
+const samples = ref()
+
+onMounted(async() => {
+  const res = await fetchSample()
+  samples.value = res
+})
 </script>
 
 <style lang="scss" scoped>
