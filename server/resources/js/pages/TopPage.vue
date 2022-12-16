@@ -11,22 +11,74 @@
     >
       Add Count
     </button>
+    
     <img :src="'/images/no-image.png'" />
-    {{ samples }}
+    
+    <div>
+      <button
+        class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2"
+        @click="logoutProcess"
+      >
+        ログアウト
+      </button>
+    </div>
+      <button
+        class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2"
+        @click="moveLoginPage()"
+      >
+        ログイン
+      </button>
+    <div>
+
+    </div>
+
+    <div>
+      <button
+        class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2"
+        @click="fetchSamples()"
+      >
+        サンプル取得
+      </button>
+      <ul>
+        <li>{{ samples }}</li>
+      </ul>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeMount } from 'vue'
 import { fetchSample } from '../api/SampleRepository'
+import { logout } from '../api/auth/login'
+import { useRouter } from 'vue-router'
 
 const count = ref(0)
 const samples = ref()
+const router = useRouter()
 
-onMounted(async() => {
+const logoutProcess = async() => {
+  const result = await logout()
+  router.push({ name: 'LoginPage' })
+}
+
+const fetchSamples = async() => {
   const res = await fetchSample()
   samples.value = res
-})
+}
+
+const moveLoginPage = () => {
+  router.push({ name: 'LoginPage' })
+}
+
+
+// onMounted(async() => {
+
+// })
+
+// onBeforeMount(async() => {
+
+// })
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,5 @@
 import TopPage from '@/pages/TopPage.vue'
+import LoginPage from '@/pages/LoginPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -8,9 +9,9 @@ const routes = [
     component: TopPage,
   },
   {
-    path: '/next',
-    name: 'NextPage',
-    component: TopPage,
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage,
   },
 ]
 const router = createRouter({

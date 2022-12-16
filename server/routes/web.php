@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/top/{any}', function () {
-//     return view('app');
-// })->where('any', '.*');
-
-Route::get('/top', function () {
+Route::get('/{any}', function () {
     return view('app');
-});
+})->where('any', '.*');
+
+// Route::get('/top', function () {
+//     return view('app');
+// });
+

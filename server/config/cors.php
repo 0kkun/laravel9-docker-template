@@ -29,6 +29,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    // NOTE: フロントとAPIのドメインが異なる場合、ここをtrueにする必要がある
+    'supports_credentials' => true,
 
 ];

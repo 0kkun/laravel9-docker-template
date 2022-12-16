@@ -112,3 +112,6 @@ mv-dir:
 .PHONY: remove-temporary
 remove-temporary:
 	rm -r server/temporary
+
+redis:
+	docker-compose exec redis redis-cli

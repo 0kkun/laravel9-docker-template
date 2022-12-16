@@ -4,17 +4,13 @@ use Laravel\Sanctum\Sanctum;
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Stateful Domains
-    |--------------------------------------------------------------------------
-    |
-    | Requests from the following domains / hosts will receive stateful API
-    | authentication cookies. Typically, these should include your local
-    | and production domains which access your API via a frontend SPA.
-    |
-    */
-
+    /**
+     * Stateful Domains
+     * 次のドメイン/ホストからのリクエストはステートフル API を受け取ります
+     * 認証クッキー。通常、これらにはローカルを含める必要があります
+     * フロントエンド SPA を介して API にアクセスする本番ドメイン。
+     * ドメインを設定している場合や本番環境では、.envのSANCTUM_STATEFUL_DOMAINSに設定が必要
+     */
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
         'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',

@@ -11,7 +11,7 @@ export type SampleRepository = {
 export const fetchSample = async (): Promise<ApiResponse<Sample>> => {
   try {
     const apiUrl = 'api/v1/samples'
-    return await getRequest<Sample>(apiUrl)
+    return await getRequest<Sample, null>(apiUrl)
   } catch (e) {
     throw Error
   }
