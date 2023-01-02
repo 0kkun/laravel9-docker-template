@@ -1,5 +1,13 @@
-project = temp
+include .env
 
+MYSQL_ROOT_LOGIN_CMD = mysql -u root -p$(MYSQL_ROOT_PASSWORD)
+MYSQL_USER_LOGIN_CMD = mysql -u $(MYSQL_USER_NAME) -p$(MYSQL_PASSWORD) $(MYSQL_DB_NAME)
+DCE = docker-compose exec
+DEI = docker exec -it
+
+# *****************************
+# *         For Build         *
+# *****************************
 .PHONY: init
 init:
 	@make set-up
@@ -7,28 +15,63 @@ init:
 	@make up
 	@make composer-install
 	@make npm-install
-	docker-compose exec app php artisan key:generate
+	$(DCE) app php artisan key:generate
 	@make restart
 	@make migrate
 	@make seed
-
-.PHONY: restart
-restart:
-	@make down
-	@make up
-
-.PHONY: migrate
-migrate:
-	docker-compose exec app php artisan migrate:fresh
-
-.PHONY: seed
-seed:
-	docker-compose exec app php artisan db:seed
+	@make test-init
 
 .PHONY: set-up
 set-up:
-	cp server/.env.example server/.env
+	cp ${SOURCE_DIR_NAME}/.env.example server/.env && cp .env.example .env
 
+.PHONY: composer-install
+composer-install:
+	$(DCE) app composer install
+
+
+# *****************************
+# *       For Frontend        *
+# *****************************
+.PHONY: npm-install
+npm-install:
+	$(DCE) app npm install
+
+.PHONY: npm-run
+npm-run:
+	$(DEI) $(PROJECT_NAME)_app npm run dev
+
+.PHONY: lint
+lint:
+	$(DEI) $(PROJECT_NAME)_app npm run lint
+
+.PHONY: format
+format:
+	$(DEI) $(PROJECT_NAME)_app npm run format
+
+
+# *****************************
+# *      Laravel Command      *
+# *****************************
+.PHONY: migrate
+migrate:
+	$(DCE) app php artisan migrate:fresh
+
+.PHONY: seed
+seed:
+	$(DCE) app php artisan db:seed
+
+.PHONY: dump
+dump:
+	$(DEI) $(PROJECT_NAME)_app composer dump-autoload
+
+.PHONY: test
+test:
+	docker exec $(PROJECT_NAME)_app ./vendor/bin/phpunit --testdox
+
+# *****************************
+# *     Container Controll    *
+# *****************************
 .PHONY: build_c
 build_c:
 	docker-compose build --no-cache --force-rm
@@ -41,14 +84,6 @@ build:
 up:
 	docker-compose up -d
 
-.PHONY: composer-install
-composer-install:
-	docker-compose exec app composer install
-
-.PHONY: npm-install
-npm-install:
-	docker-compose exec app npm install
-
 .PHONY: stop
 stop:
 	docker-compose stop
@@ -57,44 +92,86 @@ stop:
 down:
 	docker-compose down --remove-orphans
 
-.PHONY: open_minio
-open_minio:
-	open http://localhost:9001
-
-.PHONY: work
-work:
-	docker-compose exec app bash
+.PHONY: app
+app:
+	$(DCE) app bash
 
 .PHONY: db
 db:
-	docker-compose exec db bash
+	$(DCE) db bash
 
-.PHONY: mysql
-mysql:
-	docker-compose exec db bash -c 'mysql -u root -p$$MYSQL_ROOT_PASSWORD $$MYSQL_DATABASE'
+.PHONY: nginx
+nginx:
+	$(DCE) nginx bash
 
 .PHONY: redis
 redis:
-	docker-compose exec redis redis-cli
+	$(DCE) redis redis-cli
 
-.PHONY: npm-run
-npm-run:
-	docker exec -it $(project)_app npm run dev
+.PHONY: restart
+restart:
+	@make down
+	@make up
 
-.PHONY: lint
-lint:
-	docker exec -it $(project)_app npm run lint
 
-.PHONY: format
-format:
-	docker exec -it $(project)_app npm run format
-
-# schemaspy実行コマンド
+# *****************************
+# *        Schemaspy          *
+# *****************************
 .PHONY: ss-run
 ss-run:
 	docker-compose run --rm schemaspy
 
-# 新規にlaravelプロジェクトを生成するコマンド
+
+# *****************************
+# *           MySql           *
+# *****************************
+.PHONY: mysql
+mysql:
+	$(DCE) db bash -c '$(MYSQL_USER_LOGIN_CMD)'
+
+.PHONY: mysql-root
+mysql-root:
+	$(DCE) db bash -c '$(MYSQL_ROOT_LOGIN_CMD)'
+
+.PHONY: show-dbuser
+show-dbuser:
+	$(DEI) $(PROJECT_NAME)_db $(MYSQL_ROOT_LOGIN_CMD) --execute="SELECT user, host FROM mysql.user ORDER BY user, host"
+
+.PHONY: show-dbgrants
+show-dbgrants:
+	$(DEI) $(PROJECT_NAME)_db $(MYSQL_USER_LOGIN_CMD) --execute="SHOW GRANTS"
+
+.PHONY: show-databases
+show-databases:
+	$(DEI) $(PROJECT_NAME)_db $(MYSQL_USER_LOGIN_CMD) --execute="SHOW DATABASES"
+
+.PHONY: grant-testdbuser
+grant-testdbuser:
+	$(DEI) $(PROJECT_NAME)_db $(MYSQL_ROOT_LOGIN_CMD) --execute="GRANT ALL ON $(MYSQL_DB_NAME)_testing.* TO $(MYSQL_USER_NAME)"
+
+.PHONY: create-testdb
+create-testdb:
+	$(DEI) $(PROJECT_NAME)_db $(MYSQL_ROOT_LOGIN_CMD) --execute="CREATE DATABASE $(PROJECT_NAME)_db_testing"
+
+.PHONY: test-init
+test-init:
+	@make create-testdb
+	@make grant-testdbuser
+	@make show-dbgrants
+	@make show-databases
+
+
+# *****************************
+# *          Others           *
+# *****************************
+.PHONY: open_minio
+open_minio:
+	open http://localhost:9001
+
+
+# *****************************
+# *       New laravel pj      *
+# *****************************
 .PHONY: new-project
 new-project:
 	@make create-laravel
@@ -103,15 +180,12 @@ new-project:
 
 .PHONY: create-laravel
 create-laravel:
-	docker-compose exec app composer create-project "laravel/laravel=9.*" temporary --prefer-dist
+	$(DCE) app composer create-project "laravel/laravel=9.*" temporary --prefer-dist
 
 .PHONY: mv-dir
 mv-dir:
-	cd server/temporary; mv * .[^\.]* ../
+	cd ${SOURCE_DIR_NAME}/temporary; mv * .[^\.]* ../
 
 .PHONY: remove-temporary
 remove-temporary:
-	rm -r server/temporary
-
-redis:
-	docker-compose exec redis redis-cli
+	rm -r ${SOURCE_DIR_NAME}/temporary
