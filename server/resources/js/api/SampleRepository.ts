@@ -1,4 +1,4 @@
-import { getRequest, ApiResponse } from "./api-clients"
+import { getRequest, ApiResponse } from './api-clients'
 
 export type Sample = {
   id: string

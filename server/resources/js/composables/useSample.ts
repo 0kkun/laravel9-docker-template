@@ -1,5 +1,5 @@
-import { ref } from "vue"
-import { fetchSample } from "../api/SampleRepository"
+import { ref } from 'vue'
+import { fetchSample } from '../api/SampleRepository'
 
 // export const useSample = (
 // ) => {
