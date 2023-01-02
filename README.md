@@ -26,8 +26,6 @@ $ git clone git@github.com:0kkun/laravel9-docker-template.git
 $ cd laravel9-docker-template
 
 $ make init
-
-$ make up
 ```
 
 ## ER図作成
