@@ -20,7 +20,7 @@ interface Props {
   disabled?: boolean
 }
 
-// propsのデフォルト値
+// デフォルト値
 const props = withDefaults(defineProps<Props>(), {
   text: "ボタン",
   type: "button",
