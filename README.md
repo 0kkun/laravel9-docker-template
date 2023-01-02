@@ -1,6 +1,7 @@
 # 概要
 
 - laravel9のdockerテンプレート
+- SPA用及びモバイルアプリ用認証APIまで実装
 
 # 環境情報
 
@@ -25,4 +26,19 @@ $ git clone git@github.com:0kkun/laravel9-docker-template.git
 $ cd laravel9-docker-template
 
 $ make init
+
+$ make up
 ```
+
+## ER図作成
+
+- 以下コマンドを実行
+
+```
+$ make ss-run
+```
+
+- 以下ディレクトリに成果物が入っている。
+
+> server/schemaspy/output
+
