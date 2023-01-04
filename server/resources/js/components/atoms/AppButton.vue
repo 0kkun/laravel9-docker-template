@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button-base inline-block focus-visible:ring text-white font-semibold text-center rounded-lg outline-none transition duration-100"
+    class="button-base inline-block focus-visible:ring text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
     :class="colorOptionClass"
     :type="type"
     :disabled="disabled"
@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { emit } from "process"
 import { computed } from "vue"
 
 interface Props {
@@ -31,9 +30,9 @@ const props = withDefaults(defineProps<Props>(), {
 // 特にデフォルト値を設定しない場合
 // const props = defineProps<Props>()
 
-const disabledClass = computed(() => {
-  props.disabled ? "bg-gray-500" : ""
-})
+// const disabledClass = computed(() => {
+//   props.disabled ? "bg-gray-500" : ""
+// })
 
 const colorOptionClass = computed(() => {
   return {
@@ -55,7 +54,7 @@ const colorOptionClass = computed(() => {
 
 <style lang="scss" scoped>
 .button-base {
-  width: 100%;
+  // width: 100%;
 }
 
 </style>

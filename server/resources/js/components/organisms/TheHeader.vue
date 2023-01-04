@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
+  <div class="max-w-screen-2xl px-4 md:px-8 mx-auto bg-white">
     <header class="flex justify-between items-center py-4 md:py-8">
       <!-- logo - start -->
       <a
@@ -18,8 +18,10 @@
         <a
           href="#"
           class="text-gray-600 hover:text-indigo-500 active:text-indigo-700 text-lg font-semibold transition duration-100"
-          >Home</a
+          @click.prevent.stop="moveTopPage()"
         >
+          Home
+        </a>
         <a href="#" class="inline-flex items-center text-indigo-500 text-lg font-semibold gap-1">
           Features
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800" viewBox="0 0 20 20" fill="currentColor">
@@ -52,12 +54,7 @@
         >
           Sign in
         </a>
-
-        <a
-          href="#"
-          class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
-          >Sign up</a
-        >
+        <SignUpLinkButton />
       </div>
 
       <button
@@ -81,6 +78,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/atoms/AppIcon.vue'
+import SignUpLinkButton from '../molecules/SignUpLinkButton.vue'
 
 const router = useRouter()
 

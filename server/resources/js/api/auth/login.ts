@@ -9,7 +9,7 @@ export type LoginRequest = {
 /**
  * CSRF保護を初期化する
  */
-const initCsrf = (): Promise<ApiResponse<null | string>> => {
+export const initCsrf = (): Promise<ApiResponse<null | string>> => {
   const apiUrl = 'sanctum/csrf-cookie'
   return getRequest<null | string, null>(apiUrl)
 }

@@ -1,6 +1,6 @@
 <template>
   <AppButton
-    text="Login"
+    text="Sign Up"
     type="submit"
     colorOption="primary"
     @click.stop="$emit('clickHandler')"

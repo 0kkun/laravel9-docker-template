@@ -1,23 +1,12 @@
 <template>
-  <div class="bg-white lg:pb-12">
-    <TheHeader />
+  <div class="top-page-container">
     <h1>トップページです</h1>
-    <h1 class="text-red-400 text-4xl">tailwindテスト</h1>
-    <h1>This is from Vue</h1>
-    <div class="top-page-container">Hello World from Vue.</div>
-    <div>Count:{{ count }}</div>
-    <button class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2" @click="count++">Add Count</button>
-
     <img :src="'/images/no-image.png'" />
-
     <div>
       <button class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2" @click="logoutProcess">
         ログアウト
       </button>
     </div>
-    <button class="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2" @click="moveLoginPage()">
-      ログイン
-    </button>
     <div></div>
 
     <div>
@@ -37,6 +26,7 @@ import { fetchSample } from '../api/SampleRepository'
 import { logout } from '../api/auth/login'
 import { useRouter } from 'vue-router'
 import TheHeader from '@/components/organisms/TheHeader.vue'
+import DefaultLayout from '../layouts/Defaultlayout.vue'
 
 const count = ref(0)
 const samples = ref()
@@ -51,24 +41,11 @@ const fetchSamples = async () => {
   const res = await fetchSample()
   samples.value = res
 }
-
-const moveLoginPage = () => {
-  router.push({ name: 'LoginPage' })
-}
-
-// onMounted(async() => {
-
-// })
-
-// onBeforeMount(async() => {
-
-// })
 </script>
 
 <style lang="scss" scoped>
 .top-page-container {
   width: 100%;
   height: 100%;
-  background: grey;
 }
 </style>
